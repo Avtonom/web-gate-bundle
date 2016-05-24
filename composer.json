@@ -1,0 +1,31 @@
+{
+  "name": "avtonom/web-gate-bundle",
+  "type": "symfony-bundle",
+  "description": "API for request and response to Rest and Soap ",
+  "keywords": ["Symfony2", "bundle", "API", "Rest", "Soap", "request", "response", "buzz"],
+  "homepage": "https://github.com/Avtonom/web-gate-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Anton U",
+      "email": "avtonomspb@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.2",
+    "symfony/dependency-injection": "~2.3|3.*",
+    "symfony/monolog-bundle": "2.*",
+    "sensio/buzz-bundle":"~1.0",
+    "friendsofsymfony/rest-bundle": "~1.7"
+  },
+  "autoload": {
+    "psr-0": { "Avtonom\\WebGateBundle": "" }
+  },
+  "target-dir": "Avtonom/WebGateBundle",
+  "minimum-stability": "dev",
+  "extra": {
+    "branch-alias": {
+      "dev-master": "3.0.x-dev"
+    }
+  }
+}

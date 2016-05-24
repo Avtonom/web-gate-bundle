@@ -1,0 +1,12 @@
+parameters:
+#    web_gate.login: ~
+#    web_gate.password: ~
+    web_gate.environment: dev
+    web_gate.logging_max_files: 0
+    web_gate.logging_level: 100     # 100 => 'DEBUG', 200 => 'INFO', 250 => 'NOTICE', 300 => 'WARNING', 400 => 'ERROR', 500 => 'CRITICAL', 550 => 'ALERT', 600 => 'EMERGENCY'
+    web_gate.connection_timeout: 15
+
+    request.api.host: ~
+    request.api.resource: ~
+    request.api.login: ~
+    request.api.password: ~
