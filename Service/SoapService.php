@@ -84,9 +84,10 @@ class SoapService
             ini_set("default_socket_timeout", $this->connectionTimeout);
 
             $response = $client->__soapCall($this->methodName, array('params' => $data));
-
+            $this->logger->addDebug('Request: '.$client->__getLastRequest());
             $this->logger->addDebug('Response XML: '.PHP_EOL.$client->__getLastResponse());
             $this->logger->addDebug('Response JSON: '.PHP_EOL.json_encode($response));
+//            $this->logger->addDebug('Response Headers: '.$client->__getLastResponseHeaders());
 
             return ($returnXml) ? $client->__getLastResponse() : $response;
 
@@ -101,7 +102,10 @@ class SoapService
             if($e->getCode()){
                 $code = $e->getCode();
             } else {
-                $code = (isset($e->faultcode) && is_numeric($e->faultcode)) ? $e->faultcode : 500;
+                $code = (isset($e->faultcode) && is_numeric($e->faultcode)) ? $e->faultcode : 502;
+            }
+            if($code == 500){
+                $code = 502;
             }
             $this->logger->addCritical(PHP_EOL.__METHOD__.sprintf('[%s/%s] %s', $e->getCode(), $code, $e->getMessage()));
             throw new WebGateException($e->getMessage(), $code, $e);

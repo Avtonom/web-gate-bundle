@@ -25,7 +25,7 @@ abstract class AbstractRestController extends FOSRestController
     {
         $responseData = $this->_send($serviceName, $data);
         if (!$responseData) {
-            throw new NotFoundHttpException(sprintf('The resource \'%d\' was not found.', print_r($data, true)));
+            throw new NotFoundHttpException(sprintf('The resource \'%s\' was not found.', print_r($data, true)));
         }
         return new JsonResponse($responseData);
     }

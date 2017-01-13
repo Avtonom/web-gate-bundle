@@ -88,7 +88,7 @@ class RestService
             $request->addFields($data);
         }
         try {
-            $this->logger->addDebug('Request: '.$request->getUrl());
+            $this->logger->addDebug(vsprintf('Request: %s %s', [$this->method, $request->getUrl()]));
             /** @var Buzz\Message\Response $response */
             $response = $this->client->send($request);
             $this->logger->addDebug('Response: '.$response->getStatusCode().' '.substr($response->getContent(), 0, 300).PHP_EOL.var_export($this->client->getClient()->getInfo(), true));
@@ -98,13 +98,22 @@ class RestService
                     $code = 504;
                     break;
                 default:
-                    $code = ($e->getCode() >= 100) ? $e->getCode() : 500;
+                    $code = ($e->getCode() >= 100) ? $e->getCode() : 502;
             }
             $this->logger->addCritical(PHP_EOL.__METHOD__.sprintf('[%s/%s] %s', $e->getCode(), $code, $e->getMessage()));
             throw new WebGateException($e->getMessage(), $code, $e);
         }
-        if($response->getStatusCode() != 200){
-            throw new WebGateException(json_decode($response->getContent(), true), $response->getStatusCode());
+        if($response->getStatusCode() < 200 || $response->getStatusCode() >= 300){
+            switch($response->getStatusCode()){
+                case 500:
+                    $code = 502;
+                    break;
+                default:
+                    $code = $response->getStatusCode();
+            }
+            $webGateException = new WebGateException('', $code);
+            $webGateException->setContentToJson($response->getContent());
+            throw $webGateException;
         }
         return json_decode($response->getContent(), true);
     }
