@@ -75,15 +75,17 @@ class RestService
     }
 
     /**
-     * @param array $data
+     * @param array|null $data
+     * @param string|null $resource
      *
      * @return array|string|null
      *
      * @throws \Exception
      */
-    public function send($data = null)
+    public function send($data = null, $resource = null)
     {
-        $request = new FormRequest($this->method, $this->resource, $this->host);
+        $resource = ($resource) ? $resource : $this->resource;
+        $request = new FormRequest($this->method, $resource, $this->host);
         if($data){
             $request->addFields($data);
         }
