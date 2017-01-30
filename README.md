@@ -1,18 +1,33 @@
 # web-gate-bundle
 API for request and response to Rest and Soap 
 
-=== install ===
+#### To Install
 
-kernel
+Add the bundle to app/AppKernel.php
+
+``` php
+
+$bundles(
+    ...
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
             new Avtonom\WebGateBundle\AvtonomWebGateBundle(),
+    ...
 
-params:
+```
 
+Configuration options (parameters.yaml):
+
+``` yaml
+
+    web_gate.connection_timeout: 15
     web_gate.logging_level: 100
     web_gate.logging_max_files: 0
-    web_gate.connection_timeout: 15
 
+```
+
+Configuration services (services.yaml):
+
+``` yaml
 
 services:
     app.rest.client.get_user:
@@ -26,5 +41,12 @@ services:
             - "%request.api.login%"
             - "%request.api.password%"
 
+```
+
 Controller
+
+``` php
+
 $user = $this->get('app.rest.client.get_user')->send(['login' => 'test'], '/api/v1/user' . '/other_params');
+
+```
