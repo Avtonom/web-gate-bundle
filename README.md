@@ -3,6 +3,11 @@ API for request and response to Rest and Soap
 
 #### To Install
 
+``` bash
+php composer.phar require "avtonom/web-gate-bundle"
+
+```
+
 Add the bundle to app/AppKernel.php
 
 ``` php
