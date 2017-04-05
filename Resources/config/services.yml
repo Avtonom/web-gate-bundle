@@ -1,31 +1,31 @@
 services:
 
-    web_gate.logger_handler:
+    web_gate.logger.handler:
         public: false
         class: Monolog\Handler\FingersCrossedHandler
-        arguments: ["@web_gate.logger_handler_nested", %web_gate.logging_level%]
+        arguments: ["@web_gate.logger.handler_nested", "%web_gate.logger.logging_level%"]
 
-    web_gate.logger_handler_nested:
+    web_gate.logger.handler_nested:
         public: false
         class: Monolog\Handler\RotatingFileHandler
-        arguments: [%kernel.logs_dir%/%kernel.environment%.web_gate.log, %web_gate.logging_max_files%, 100]
+        arguments: ["%kernel.logs_dir%/%kernel.environment%.web_gate.log", "%web_gate.logger.logging_max_files%", "%web_gate.logger.logging_level%"]
 
     web_gate.logger:
         public: true
         class: Symfony\Bridge\Monolog\Logger
         arguments: [web_gate]
         calls:
-            - [pushHandler, ["@web_gate.logger_handler"]]
+            - [pushHandler, ["@web_gate.logger.handler"]]
 
     web_gate.encoder.xml:
         class: Avtonom\WebGateBundle\Serializer\Encoder\XmlEncoder
 
-    soap.client.serializer.encoder.xml:
+    web_gate.soap.client.serializer.encoder.xml:
         class: Symfony\Component\Serializer\Encoder\XmlEncoder
         tag: { name: serializer.encoder }
 
-    soap.client.serializer:
+    web_gate.soap.client.serializer:
         class: Symfony\Component\Serializer\Serializer
         arguments:
-            - ["@soap.client.serializer.encoder.xml"]
-            - ["@soap.client.serializer.encoder.xml"]
+            - ["@web_gate.soap.client.serializer.encoder.xml"]
+            - ["@web_gate.soap.client.serializer.encoder.xml"]

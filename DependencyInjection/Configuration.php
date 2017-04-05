@@ -22,10 +22,10 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('login')->defaultValue(null)->end()
                 ->scalarNode('password')->defaultValue(null)->end()
-                ->scalarNode('environment')->defaultValue('dev')->end()
-                ->integerNode('logging_max_files')->defaultValue(0)->end()
-                ->integerNode('logging_level')->defaultValue(100)->end()
-                ->integerNode('connection_timeout')->defaultValue(15)->end()
+                ->scalarNode('soap.environment')->defaultValue('dev')->end()
+                ->integerNode('soap.connection_timeout')->defaultValue(15)->end()
+                ->integerNode('logger.logging_max_files')->defaultValue(0)->end()
+                ->integerNode('logger.logging_level')->defaultValue(100)->end()
 
             ->end()
 
@@ -43,12 +43,12 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('environment')->defaultValue('dev')->end()
+            ->scalarNode('soap.environment')->defaultValue('dev')->end()
 
             ->arrayNode('web_gate')
 
                 ->children()
-                ->scalarNode('environment')->defaultValue('dev')->end()
+                ->scalarNode('soap.environment')->defaultValue('dev')->end()
 
                 ->end()
             ->end()
@@ -68,10 +68,10 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('login')->defaultValue(null)->end()
                 ->scalarNode('password')->defaultValue(null)->end()
-                ->scalarNode('environment')->defaultValue('dev')->end()
-                ->integerNode('logging_max_files')->defaultValue(0)->end()
-                ->integerNode('logging_level')->defaultValue(100)->end()
-                ->integerNode('connection_timeout')->defaultValue(15)->end()
+                ->scalarNode('soap.environment')->defaultValue('dev')->end()
+                ->integerNode('soap.connection_timeout')->defaultValue(15)->end()
+                ->integerNode('logger.logging_max_files')->defaultValue(0)->end()
+                ->integerNode('logger.logging_level')->defaultValue(100)->end()
             ->end();
         /*$treeBuilder->root('request')
             ->addDefaultsIfNotSet()

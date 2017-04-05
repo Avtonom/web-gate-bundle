@@ -24,9 +24,11 @@ Configuration options (parameters.yaml):
 
 ``` yaml
 
-    web_gate.connection_timeout: 15
-    web_gate.logging_level: 100
-    web_gate.logging_max_files: 0
+    web_gate.soap.environment: dev
+    web_gate.soap.connection_timeout: 15
+    
+    web_gate.logger.logging_max_files: 0
+    web_gate.logger.logging_level: 100 
 
 ```
 
@@ -41,10 +43,10 @@ services:
             - "@web_gate.logger"
             - "@buzz"
             - "GET"
-            - "%request.api.host%"
-            - "%request.api.env%/api/v1/user/"
-            - "%request.api.login%"
-            - "%request.api.password%"
+            - "%web_gate.rest.host%"
+            - "%web_gate.rest.env%/api/v1/user/"
+            - "%web_gate.rest.login%"
+            - "%web_gate.rest.password%"
 
 ```
 
