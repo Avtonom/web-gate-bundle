@@ -16,7 +16,7 @@
     "symfony/dependency-injection": "~2.3|~3.0",
     "symfony/monolog-bundle": "~2.0|~3.0",
     "sensio/buzz-bundle":"~1.0",
-    "friendsofsymfony/rest-bundle": "~1.7|~2.1"
+    "friendsofsymfony/rest-bundle": "<=2.1.*"
   },
   "autoload": {
     "psr-0": { "Avtonom\\WebGateBundle": "" }
