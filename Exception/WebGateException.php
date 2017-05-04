@@ -34,6 +34,6 @@ class WebGateException extends \Exception
      */
     public function getContent($decode = true)
     {
-        return (!empty($this->getMessage())) ? : $this->getContentToJson($decode);
+        return (!empty($this->getMessage())) ? $this->getMessage() : $this->getContentToJson($decode);
     }
 }
