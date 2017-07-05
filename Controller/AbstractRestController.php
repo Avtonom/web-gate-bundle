@@ -2,6 +2,7 @@
 
 namespace Avtonom\WebGateBundle\Controller;
 
+use Avtonom\WebGateBundle\Service\SoapService;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -42,7 +43,9 @@ abstract class AbstractRestController extends FOSRestController
      */
     protected function _send($serviceName, $data, $returnXml = false)
     {
-        $this->get('web_gate.logger')->addInfo(__METHOD__.PHP_EOL.'INPUT: '.print_r($data, true));
-        return $this->get($serviceName)->send($data, $returnXml);
+        /** @var SoapService $service */
+        $service = $this->get($serviceName);
+        $this->get('web_gate.logger')->addInfo(__METHOD__, [$service->getMethodName(), $data]);
+        return $service->send($data, $returnXml);
     }
 }

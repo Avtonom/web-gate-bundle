@@ -111,4 +111,12 @@ class SoapService
             throw new WebGateException($e->getMessage(), $code, $e);
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getMethodName()
+    {
+        return $this->methodName;
+    }
 }
