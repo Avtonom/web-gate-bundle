@@ -67,7 +67,6 @@ class SoapService
             $options = [
                 'trace' => true,
                 'exceptions' => true,
-                'connection_timeout' => $this->connectionTimeout,
             ];
             if(!empty($this->login)){
                 $options['login'] = $this->login;
@@ -80,8 +79,27 @@ class SoapService
             } else{
                 $wsdl = $this->wsdlPath;
             }
+            if($this->connectionTimeout) {
+                ini_set("default_socket_timeout", $this->connectionTimeout);
+                ini_set("max_execution_time", $this->connectionTimeout);
+                set_time_limit($this->connectionTimeout);
+                $options['connection_timeout'] = $this->connectionTimeout;
+
+                $s_options = array(
+                    'http' => array(
+                        'timeout' => $this->connectionTimeout,
+                    )
+                );
+                if($stream = stream_context_create($s_options)) {
+                    try {
+                        stream_set_timeout($stream, $this->connectionTimeout);
+                        $options['stream_context'] = $stream;
+                    } catch (\Exception $e) {
+                        $this->logger->addWarning(PHP_EOL.__METHOD__.':'.sprintf('%s [%s/%s] %s', 'stream_context_create', get_class($e), $e->getCode(), $e->getMessage()));
+                    }
+                }
+            }
             $client = new \SoapClient($wsdl, $options);
-            ini_set("default_socket_timeout", $this->connectionTimeout);
 
             $response = $client->__soapCall($this->methodName, array('params' => $data));
             $this->logger->addDebug('Request: '.$client->__getLastRequest());
