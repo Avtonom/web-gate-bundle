@@ -130,7 +130,7 @@ class SoapService
                 $code = $e->faultcode;
 
             } elseif(isset($client) && $responseHeader = $client->__getLastResponseHeaders()){
-                if(preg_match('^HTTP\/.{3} (\d*)', $responseHeader, $matches) && is_array($matches) && sizeof($matches) > 1){
+                if(preg_match('/^HTTP\/.{3} (\d*)/i', $responseHeader, $matches) && is_array($matches) && sizeof($matches) > 1){
                     $code = $matches[1];
                 }
             }
