@@ -137,7 +137,7 @@ class SoapService
             if(!$code || $code == 500){
                 $code = 502;
             }
-            $this->logger->addCritical(PHP_EOL.__METHOD__.sprintf('[%s/%s] %s', $e->getCode(), $code, $e->getMessage()));
+            $this->logger->addDebug(PHP_EOL.__METHOD__.sprintf('[%s/%s] %s', $e->getCode(), $code, $e->getMessage()));
             throw new WebGateException($e->getMessage(), $code, $e);
         }
     }
