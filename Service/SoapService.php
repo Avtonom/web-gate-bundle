@@ -122,12 +122,19 @@ class SoapService
                 $this->logger->addDebug('Response Headers: '.$client->__getLastResponseHeaders());
                 $this->logger->addDebug('Response: '.PHP_EOL.$client->__getLastResponse());
             }
+            $code = 0;
             if($e->getCode()){
                 $code = $e->getCode();
-            } else {
-                $code = (isset($e->faultcode) && is_numeric($e->faultcode)) ? $e->faultcode : 502;
+
+            } elseif(isset($e->faultcode) && is_numeric($e->faultcode)){
+                $code = $e->faultcode;
+
+            } elseif(isset($client) && $responseHeader = $client->__getLastResponseHeaders()){
+                if(preg_match('^HTTP\/.{3} (\d*)', $responseHeader, $matches) && is_array($matches) && sizeof($matches) > 1){
+                    $code = $matches[1];
+                }
             }
-            if($code == 500){
+            if(!$code || $code == 500){
                 $code = 502;
             }
             $this->logger->addCritical(PHP_EOL.__METHOD__.sprintf('[%s/%s] %s', $e->getCode(), $code, $e->getMessage()));
