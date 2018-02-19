@@ -1,21 +1,44 @@
 services:
 
-    web_gate.logger.handler:
+    monolog.handler.web_gate:
         public: false
         class: Monolog\Handler\FingersCrossedHandler
         arguments: ["@web_gate.logger.handler_nested", "%web_gate.logger.logging_level%"]
+        calls:
+            - [setFormatter, ["@web_gate.logger.formatter.user"]]
 
     web_gate.logger.handler_nested:
         public: false
         class: Monolog\Handler\RotatingFileHandler
         arguments: ["%kernel.logs_dir%/%kernel.environment%.web_gate.log", "%web_gate.logger.logging_max_files%", "%web_gate.logger.logging_level%"]
 
+    web_gate.logger.processor.user:
+        class: Avtonom\WebGateBundle\Monolog\Processor\UserProcessor
+        arguments: ["@security.token_storage"]
+        tags:
+          - { name: monolog.processor, method: processRecord, handler: web_gate }
+
+    web_gate.logger.processor.uid:
+        class: Monolog\Processor\UidProcessor
+        tags:
+          - { name: monolog.processor, handler: web_gate }
+
+    web_gate.logger.processor.process_id:
+        class: Monolog\Processor\ProcessIdProcessor
+        tags:
+          - { name: monolog.processor, handler: web_gate }
+
+    web_gate.logger.formatter.user:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] [%%extra.user%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"
+
     web_gate.logger:
         public: true
         class: Symfony\Bridge\Monolog\Logger
         arguments: [web_gate]
         calls:
-            - [pushHandler, ["@web_gate.logger.handler"]]
+            - [pushHandler, ["@monolog.handler.web_gate"]]
 
     web_gate.encoder.xml:
         class: Avtonom\WebGateBundle\Serializer\Encoder\XmlEncoder
