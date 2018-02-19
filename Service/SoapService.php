@@ -65,18 +65,22 @@ class SoapService
     {
         try {
             $options = [
+//            'soap_version' => SOAP_1_2,
+//            'soap_version' => SOAP_1_1,
                 'trace' => true,
                 'exceptions' => true,
+//                'features' => SOAP_SINGLE_ELEMENT_ARRAYS, // чтобы  всегда был массив, даже если там 1 или 0 элементов
             ];
             if(!empty($this->login)){
                 $options['login'] = $this->login;
                 $options['password'] = $this->password;
             }
+            $options['cache_wsdl'] = WSDL_CACHE_NONE;
             if(0){
                 $options['location'] = '';
                 $options['uri'] = '';
                 $wsdl = null;
-            } else{
+            } else {
                 $wsdl = $this->wsdlPath;
             }
             if($this->connectionTimeout) {
@@ -87,6 +91,7 @@ class SoapService
 
                 $s_options = array(
                     'http' => array(
+                        'method' => 'POST',
                         'timeout' => $this->connectionTimeout,
                     )
                 );
