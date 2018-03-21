@@ -10,9 +10,14 @@ class WebGateException extends \Exception
     protected $contentToJson;
 
     /**
+     * @var mixed
+     */
+    protected $data;
+
+    /**
      * @param bool|true $decode
      *
-     * @return string
+     * @return mixed|string
      *
      */
     public function getContentToJson($decode = true)
@@ -35,5 +40,21 @@ class WebGateException extends \Exception
     public function getContent($decode = true)
     {
         return (!empty($this->getMessage())) ? $this->getMessage() : $this->getContentToJson($decode);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
     }
 }

@@ -138,7 +138,14 @@ class SoapService
                 $code = 502;
             }
             $this->logger->addDebug(PHP_EOL.__METHOD__.sprintf('[%s/%s] %s', $e->getCode(), $code, $e->getMessage()));
-            throw new WebGateException($e->getMessage(), $code, $e);
+            $webGateException = new WebGateException($e->getMessage(), $code, $e);
+            if(isset($client)) {
+                $webGateException->setData([
+                    'response_headers' => $client->__getLastResponseHeaders(),
+                    'response' => $client->__getLastResponse(),
+                ]);
+            }
+            throw $webGateException;
         }
     }
 
