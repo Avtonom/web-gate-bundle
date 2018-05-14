@@ -144,4 +144,12 @@ class RestService
         }
         return false;
     }
+
+    /**
+     * @return string
+     */
+    public function getMethodName()
+    {
+        return vsprintf('[%s] host: %s,  url: %s', [$this->method, $this->host, $this->resource]);
+    }
 }
