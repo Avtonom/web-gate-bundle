@@ -57,6 +57,7 @@ class RestService
         $this->useCookie = $useCookie;
 
         $this->client->getClient()->setOption(CURLINFO_HEADER_OUT, true);
+        $this->client->getClient()->setOption(CURLOPT_SSL_VERIFYPEER, false);
 
         if($this->login){
             $listener = new BasicAuthListener($this->login, $this->password);
