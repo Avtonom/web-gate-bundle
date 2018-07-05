@@ -95,10 +95,9 @@ class SoapService
                         'timeout' => $this->connectionTimeout,
                     )
                 );
-                if($stream = stream_context_create($s_options)) {
+                if($streamContext = stream_context_create($s_options)) {
                     try {
-                        stream_set_timeout($stream, $this->connectionTimeout);
-                        $options['stream_context'] = $stream;
+                        $options['stream_context'] = $streamContext;
                     } catch (\Exception $e) {
                         $this->logger->addWarning(PHP_EOL.__METHOD__.':'.sprintf('%s [%s/%s] %s', 'stream_context_create', get_class($e), $e->getCode(), $e->getMessage()));
                     }
